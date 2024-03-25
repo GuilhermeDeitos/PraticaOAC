@@ -37,7 +37,7 @@ void MulM1M2T(double **M1, double **M2T, double **MR, int l1, int c2)
             MR[i][j] = 0;
             for (int k = 0; k < c2; k++)
             {
-                MR[i][j] += M1[i][k] * M2T[k][j];
+                MR[i][j] += M1[i][k] * M2T[k][i];
             }
         }
     }
@@ -69,8 +69,7 @@ void exibeMat(int linhas, int colunas,double **M){
 
 int main(int argc, char *argv[])
 {
-    float tempo1 = 0.0;
-    float tempo2 = 0.0;
+    float tempo = 0.0;
     clock_t inicio, fim;
 
     if (argc != 6)
@@ -109,21 +108,25 @@ int main(int argc, char *argv[])
 
     
     if (metodo == 't')
-    {
+    {   
         inicio = clock();
         transpostaM2(M2, M2T, l2, c2);
+        fim = clock();
+        tempo = ((double) (fim - inicio)) / CLOCKS_PER_SEC;
+        cout << "Tempo de transposta: " << tempo << endl;
+        inicio = clock();
         MulM1M2T(M1, M2T, MR, l1, c2);
         fim = clock();
-        tempo1 = (float)(((fim - inicio) + 0.0)/ CLOCKS_PER_SEC);
-        cout << "Tempo de execução Transposta: " << tempo1 << "s" << endl;
+        tempo = (float)(((fim - inicio) + 0.0)/ CLOCKS_PER_SEC);
+        cout << "Tempo de execução Transposta: " << tempo << endl;
 
     } else if (metodo == 'o')
     {
         inicio = clock();
         MulM1M2(M1, M2, MR, l1, c2);
         fim = clock();
-        tempo2 = (float)(((fim - inicio) + 0.0)/ CLOCKS_PER_SEC);
-        cout << "Tempo de execução normal: " << tempo2 << "s" << endl;
+        tempo = (float)(((fim - inicio) + 0.0)/ CLOCKS_PER_SEC);
+        cout << "Tempo de execução normal: " << tempo << endl;
 
     }
 
